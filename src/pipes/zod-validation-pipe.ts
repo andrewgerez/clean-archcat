@@ -2,7 +2,7 @@ import {
   PipeTransform,
   BadRequestException
 } from '@nestjs/common'
-import { PipeErrorType } from 'src/enums'
+import { PipeErrorType } from '@/enums'
 import { ZodError, ZodSchema } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
