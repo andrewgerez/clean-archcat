@@ -16,5 +16,4 @@ import { AuthModule } from './auth/auth.module'
   controllers: [CreateAccountController],
   providers: [PrismaService],
 })
-
 export class AppModule {}
