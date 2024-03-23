@@ -15,6 +15,7 @@ import { Env } from 'src/env'
         const publicKey = config.get('JWT_PUBLIC_KEY', { infer: true })
 
         return {
+          signOptions: { algorithm: 'HS256' },
           privateKey: Buffer.from(privateKey, 'base64'),
           publicKey: Buffer.from(publicKey, 'base64'),
         }
