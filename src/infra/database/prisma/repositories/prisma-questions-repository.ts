@@ -70,7 +70,13 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     })
   }
 
-  delete(question: Question): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPersistence(question)
+
+    await this.prisma.question.delete({
+      where: {
+        id: data.id,
+      },
+    })
   }
 }
