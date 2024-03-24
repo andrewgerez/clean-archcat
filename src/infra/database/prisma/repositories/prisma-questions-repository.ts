@@ -37,8 +37,16 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     return PrismaQuestionMapper.toDomain(question)
   }
-  findManyRecent(params: PaginationParams): Promise<Question[]> {
-    throw new Error('Method not implemented.');
+  async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
+    const questions = await this.prisma.question.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return questions.map(PrismaQuestionMapper.toDomain)
   }
   save(question: Question): Promise<void> {
     throw new Error('Method not implemented.');
