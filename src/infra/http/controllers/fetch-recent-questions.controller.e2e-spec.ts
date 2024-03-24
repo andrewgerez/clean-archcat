@@ -1,13 +1,13 @@
-import { AppModule } from '@/app.module'
+import { AppModule } from '@/infra/app.module'
 import { Test } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { test } from 'vitest'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { hash } from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
 
-describe('E2E: Create question', () => {
+describe('E2E: Fetch recent questions', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -26,7 +26,7 @@ describe('E2E: Create question', () => {
     await app.init()
   })
 
-  test('[POST] /questions', async () => {
+  test('[GET] /questions', async () => {
     const user = await prisma.user.create({
       data: {
         name: 'Andrew Gerez',
@@ -37,22 +37,34 @@ describe('E2E: Create question', () => {
 
     const acessToken = jwt.sign({ sub: user.id })
 
-    const response = await request(app.getHttpServer())
-      .post('/questions')
-      .set('Authorization', `Bearer ${acessToken}`)
-      .send({
-        title: 'New question',
-        content: 'Some content',
-      })
-
-    expect(response.statusCode).toBe(201)
-
-    const questionOnDatabase = await prisma.question.findFirst({
-      where: {
-        title: 'New question',
-      },
+    await prisma.question.createMany({
+      data: [
+        {
+          title: 'Question 01',
+          slug: 'question-01',
+          content: 'Some content',
+          authorId: user.id,
+        },
+        {
+          title: 'Question 02',
+          slug: 'question-02',
+          content: 'Some content',
+          authorId: user.id,
+        },
+      ],
     })
 
-    expect(questionOnDatabase).toBeTruthy()
+    const response = await request(app.getHttpServer())
+      .get('/questions')
+      .set('Authorization', `Bearer ${acessToken}`)
+      .send()
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual({
+      questions: [
+        expect.objectContaining({ title: 'Question 01' }),
+        expect.objectContaining({ title: 'Question 02' }),
+      ],
+    })
   })
 })

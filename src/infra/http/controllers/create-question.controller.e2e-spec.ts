@@ -1,13 +1,13 @@
-import { AppModule } from '@/app.module'
+import { AppModule } from '@/infra/app.module'
 import { Test } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { test } from 'vitest'
-import { PrismaService } from '@/prisma/prisma.service'
+import { PrismaService } from '@/infra/prisma/prisma.service'
 import { hash } from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
 
-describe('E2E: Fetch recent questions', () => {
+describe('E2E: Create question', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -26,7 +26,7 @@ describe('E2E: Fetch recent questions', () => {
     await app.init()
   })
 
-  test('[GET] /questions', async () => {
+  test('[POST] /questions', async () => {
     const user = await prisma.user.create({
       data: {
         name: 'Andrew Gerez',
@@ -37,34 +37,22 @@ describe('E2E: Fetch recent questions', () => {
 
     const acessToken = jwt.sign({ sub: user.id })
 
-    await prisma.question.createMany({
-      data: [
-        {
-          title: 'Question 01',
-          slug: 'question-01',
-          content: 'Some content',
-          authorId: user.id,
-        },
-        {
-          title: 'Question 02',
-          slug: 'question-02',
-          content: 'Some content',
-          authorId: user.id,
-        },
-      ],
-    })
-
     const response = await request(app.getHttpServer())
-      .get('/questions')
+      .post('/questions')
       .set('Authorization', `Bearer ${acessToken}`)
-      .send()
+      .send({
+        title: 'New question',
+        content: 'Some content',
+      })
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
-      questions: [
-        expect.objectContaining({ title: 'Question 01' }),
-        expect.objectContaining({ title: 'Question 02' }),
-      ],
+    expect(response.statusCode).toBe(201)
+
+    const questionOnDatabase = await prisma.question.findFirst({
+      where: {
+        title: 'New question',
+      },
     })
+
+    expect(questionOnDatabase).toBeTruthy()
   })
 })
