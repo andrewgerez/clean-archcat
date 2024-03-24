@@ -8,12 +8,11 @@ import { PrismaService } from '@/prisma/prisma.service'
 describe('E2E: Create account', () => {
   let app: INestApplication
   let prisma: PrismaService
-  
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .compile()
+    }).compile()
 
     app = moduleRef.createNestApplication()
 
@@ -34,7 +33,7 @@ describe('E2E: Create account', () => {
     const userOnDatabase = await prisma.user.findUnique({
       where: {
         email: 'email@email.com',
-      }
+      },
     })
 
     expect(userOnDatabase).toBeTruthy()

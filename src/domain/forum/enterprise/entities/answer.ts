@@ -26,8 +26,18 @@ export class Answer extends AggregateRoot<AnswerProps> {
     return this.props.content
   }
 
+  set content(content: string) {
+    this.props.content = content
+    this.touch()
+  }
+
   get attachments() {
     return this.props.attachments
+  }
+
+  set attachments(attachments: AnswerAttachmentList) {
+    this.props.attachments = attachments
+    this.touch()
   }
 
   get createdAt() {
@@ -44,16 +54,6 @@ export class Answer extends AggregateRoot<AnswerProps> {
 
   private touch() {
     this.props.updatedAt = new Date()
-  }
-
-  set content(content: string) {
-    this.props.content = content
-    this.touch()
-  }
-
-  set attachments(attachments: AnswerAttachmentList) {
-    this.props.attachments = attachments
-    this.touch()
   }
 
   static create(

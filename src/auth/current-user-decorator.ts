@@ -6,5 +6,5 @@ export const CurrentUser = createParamDecorator(
     const request = context.switchToHttp().getRequest()
 
     return request.user as UserPayload
-  }
+  },
 )

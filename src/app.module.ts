@@ -11,7 +11,7 @@ import { FetchRecentQuestionsController } from './controllers/fetch-recent-quest
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validate: env => envSchema.parse(env),
+      validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
     AuthModule,

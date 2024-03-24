@@ -1,6 +1,4 @@
-import {
-  Controller, UseGuards, Post, Body
-} from '@nestjs/common'
+import { Controller, UseGuards, Post, Body } from '@nestjs/common'
 import { CurrentUser } from '@/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
 import { UserPayload } from '@/auth/jwt.strategy'
@@ -20,14 +18,12 @@ type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
 @Controller('/questions')
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionContorller {
-  constructor(
-    private prisma: PrismaService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   @Post()
   async handle(
     @Body(bodyValidationPipe) body: CreateQuestionBodySchema,
-    @CurrentUser() user: UserPayload
+    @CurrentUser() user: UserPayload,
   ) {
     const { title, content } = body
     const { sub: userId } = user

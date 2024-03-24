@@ -15,8 +15,7 @@ describe('E2E: Fetch recent questions', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .compile()
+    }).compile()
 
     app = moduleRef.createNestApplication()
 
@@ -33,7 +32,7 @@ describe('E2E: Fetch recent questions', () => {
         name: 'Andrew Gerez',
         email: 'email@email.com',
         password: await hash('123456', 8),
-      }
+      },
     })
 
     const acessToken = jwt.sign({ sub: user.id })
@@ -51,8 +50,8 @@ describe('E2E: Fetch recent questions', () => {
           slug: 'question-02',
           content: 'Some content',
           authorId: user.id,
-        }
-      ]
+        },
+      ],
     })
 
     const response = await request(app.getHttpServer())
@@ -65,7 +64,7 @@ describe('E2E: Fetch recent questions', () => {
       questions: [
         expect.objectContaining({ title: 'Question 01' }),
         expect.objectContaining({ title: 'Question 02' }),
-      ]
+      ],
     })
   })
 })

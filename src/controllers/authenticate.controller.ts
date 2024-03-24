@@ -14,17 +14,14 @@ import { z } from 'zod'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6)
+  password: z.string().min(6),
 })
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
 export class AuthenticateController {
-  constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService
-  ) {}
+  constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
   @Post()
   @HttpCode(201)
@@ -35,7 +32,7 @@ export class AuthenticateController {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
-      }
+      },
     })
 
     if (!user) {

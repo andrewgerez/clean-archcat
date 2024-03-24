@@ -9,12 +9,11 @@ import { hash } from 'bcryptjs'
 describe('E2E: Authenticate', () => {
   let app: INestApplication
   let prisma: PrismaService
-  
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .compile()
+    }).compile()
 
     app = moduleRef.createNestApplication()
 
@@ -29,7 +28,7 @@ describe('E2E: Authenticate', () => {
         name: 'Andrew Gerez',
         email: 'email@email.com',
         password: await hash('123456', 8),
-      }
+      },
     })
 
     const response = await request(app.getHttpServer()).post('/sessions').send({
@@ -39,7 +38,7 @@ describe('E2E: Authenticate', () => {
 
     expect(response.statusCode).toBe(201)
     expect(response.body).toEqual({
-      access_token: expect.any(String)
+      access_token: expect.any(String),
     })
   })
 })

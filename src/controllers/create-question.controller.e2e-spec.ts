@@ -15,8 +15,7 @@ describe('E2E: Create question', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .compile()
+    }).compile()
 
     app = moduleRef.createNestApplication()
 
@@ -33,7 +32,7 @@ describe('E2E: Create question', () => {
         name: 'Andrew Gerez',
         email: 'email@email.com',
         password: await hash('123456', 8),
-      }
+      },
     })
 
     const acessToken = jwt.sign({ sub: user.id })
@@ -51,7 +50,7 @@ describe('E2E: Create question', () => {
     const questionOnDatabase = await prisma.question.findFirst({
       where: {
         title: 'New question',
-      }
+      },
     })
 
     expect(questionOnDatabase).toBeTruthy()
