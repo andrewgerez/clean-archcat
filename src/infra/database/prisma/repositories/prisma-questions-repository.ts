@@ -51,7 +51,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return questions.map(PrismaQuestionMapper.toDomain)
   }
 
-  async save(question: Question): Promise<void> {
+  async create(question: Question): Promise<void> {
     const data = PrismaQuestionMapper.toPersistence(question)
 
     await this.prisma.question.create({
@@ -59,8 +59,15 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     })
   }
 
-  create(question: Question): Promise<void> {
-    throw new Error('Method not implemented.');
+  async save(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPersistence(question)
+
+    await this.prisma.question.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    })
   }
 
   delete(question: Question): Promise<void> {
