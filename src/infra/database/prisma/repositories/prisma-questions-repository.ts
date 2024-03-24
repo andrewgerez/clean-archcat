@@ -24,6 +24,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     return PrismaQuestionMapper.toDomain(question)
   }
+
   async findBySlug(slug: string): Promise<Question> {
     const question = await this.prisma.question.findUnique({
       where: {
@@ -37,6 +38,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     return PrismaQuestionMapper.toDomain(question)
   }
+
   async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
     const questions = await this.prisma.question.findMany({
       orderBy: {
@@ -48,12 +50,19 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
     return questions.map(PrismaQuestionMapper.toDomain)
   }
-  save(question: Question): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async save(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPersistence(question)
+
+    await this.prisma.question.create({
+      data,
+    })
   }
+
   create(question: Question): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
   delete(question: Question): Promise<void> {
     throw new Error('Method not implemented.');
   }
