@@ -2,7 +2,7 @@ import { DomainEvents } from "@/core/events/domain-events"
 import { StudentsRepository } from "@/domain/forum/application/repositories/students-repository"
 import { Student } from "@/domain/forum/enterprise/entities/student"
 
-export class InMemoryQuestionsRepository implements StudentsRepository {
+export class InMemoryStudentsRepository implements StudentsRepository {
   public items: Student[] = []
 
   async findByEmail(email: string) {
