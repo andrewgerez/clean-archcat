@@ -4,12 +4,14 @@ import { JwtStrategy } from './jwt.strategy'
 import { JwtModule } from '@nestjs/jwt'
 import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './jwt-auth.guard'
-import { EnvService } from '../env.service'
+import { EnvService } from '../env/env.service'
+import { EnvModule } from '../env/env.module'
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.registerAsync({
+      imports: [EnvModule],
       inject: [EnvService],
       global: true,
       useFactory(env: EnvService) {
