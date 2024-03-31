@@ -52,7 +52,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   }
 
   async create(question: Question): Promise<void> {
-    const data = PrismaQuestionMapper.toPersistence(question)
+    const data = PrismaQuestionMapper.toPrisma(question)
 
     await this.prisma.question.create({
       data,
@@ -60,7 +60,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   }
 
   async save(question: Question): Promise<void> {
-    const data = PrismaQuestionMapper.toPersistence(question)
+    const data = PrismaQuestionMapper.toPrisma(question)
 
     await this.prisma.question.update({
       where: {
@@ -71,7 +71,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   }
 
   async delete(question: Question): Promise<void> {
-    const data = PrismaQuestionMapper.toPersistence(question)
+    const data = PrismaQuestionMapper.toPrisma(question)
 
     await this.prisma.question.delete({
       where: {
