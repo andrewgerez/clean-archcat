@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question'
 
 const answerQuestionBodySchema = z.object({
-  title: z.string(),
   content: z.string(),
 })
 
@@ -29,8 +28,8 @@ export class AnswerQuestionController {
 
     const result = await this.answerQuestion.execute({
       content,
-      questionId,
       authorId: userId,
+      questionId,
       attachmentsIds: [],
     })
 
