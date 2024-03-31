@@ -4,9 +4,9 @@ import { Attachment as PrismaAttachment } from '@prisma/client'
 
 export class PrismaQuestionAttachmentMapper {
   static toDomain(raw: PrismaAttachment): QuestionAttachment {
-    // if (!raw.questionId) {
-    //   throw new Error('Invalid attachment type.')
-    // }
+    if (!raw.questionId) {
+      throw new Error('Invalid attachment type.')
+    }
 
     return QuestionAttachment.create(
       {
