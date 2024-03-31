@@ -19,7 +19,7 @@ export class PrismaAnswerCommentMapper {
       new UniqueEntityID(raw.id))
   }
 
-  static toPersistence(
+  static toPrisma(
     answerComment: AnswerComment
   ): Prisma.CommentUncheckedCreateInput {
     return {

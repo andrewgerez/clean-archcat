@@ -15,7 +15,7 @@ export class PrismaAnswerMapper {
       new UniqueEntityID(raw.id))
   }
 
-  static toPersistence(answer: Answer): Prisma.AnswerUncheckedCreateInput {
+  static toPrisma(answer: Answer): Prisma.AnswerUncheckedCreateInput {
     return {
       id: answer.id.toString(),
       authorId: answer.authorId.toString(),
