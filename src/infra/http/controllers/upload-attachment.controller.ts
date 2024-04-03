@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
-@Controller('/attachments/:slug')
+@Controller('/attachments')
 export class UploadAttachmentController {
   // constructor() {}
 
