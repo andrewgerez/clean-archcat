@@ -1,4 +1,12 @@
-import { Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe
+} from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('/attachments/:slug')
@@ -7,5 +15,18 @@ export class UploadAttachmentController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async handle(@UploadedFile() file: Express.Multer.File) {}
+  async handle(@UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({
+          maxSize: 1024 * 1024 * 2 // 2MB
+        }),
+        new FileTypeValidator({
+          fileType: 'image/jpeg'
+        }),
+      ],
+    }),
+  ) file: Express.Multer.File) {
+    console.log(file)
+  }
 }
