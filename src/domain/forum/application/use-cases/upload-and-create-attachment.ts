@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { InvalidAttachmentTypeError } from './errors/invalid-attachment-type'
 import { Attachment } from '../../enterprise/entities/attachment'
 import { AttachmentsRepository } from '../repositories/attachments-repository'
+import { Uploader } from '../storage/uploader'
 
 interface UploadAndCreateAttachmentUseCaseRequest {
   fileName: string
@@ -20,7 +21,8 @@ type UploadAndCreateAttachmentUseCaseResponse = Either<
 @Injectable()
 export class UploadAndCreateAttachmentUseCase {
   constructor(
-    private attachmentsRepository: AttachmentsRepository
+    private attachmentsRepository: AttachmentsRepository,
+    private uploader: Uploader
   ) {}
 
   async execute({
@@ -35,9 +37,15 @@ export class UploadAndCreateAttachmentUseCase {
       return left(new InvalidAttachmentTypeError(fileType))
     }
 
+    const { url } = await this.uploader.upload({
+      fileName,
+      fileType,
+      body
+    })
+
     const attachment = Attachment.create({
       title: fileName,
-      url: fileName,
+      url,
     })
 
     await this.attachmentsRepository.create(attachment)
