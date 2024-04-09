@@ -1,15 +1,14 @@
 version: '3.8'
 
 services:
-  postgres:
+  clean-archcat:
     container_name: clean-archcat-pg
-    image: postgres
+    image: bitnami/postgresql
     ports:
       - 5432:5432
     environment:
       POSTGRES_USER: archcatpostgres
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: archcat
-      PGDATA: /data/postgres
     volumes:
       - ./data/pg:/data/postgres
