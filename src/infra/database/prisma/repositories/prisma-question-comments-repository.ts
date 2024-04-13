@@ -4,10 +4,14 @@ import { QuestionComment } from '@/domain/forum/enterprise/entities/question-com
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaQuestionCommentMapper } from '../mappers/prisma-question-comment-mapper'
+import { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-objects/comment-with-autor'
 
 @Injectable()
 export class PrismaQuestionCommentsRepository implements QuestionCommentsRepository {
   constructor(private prisma: PrismaService) { }
+  findManyByQuestionIdWithAuthor(questionId: string, params: PaginationParams): Promise<CommentWithAuthor[]> {
+    throw new Error('Method not implemented.')
+  }
 
   async findById(id: string): Promise<QuestionComment> {
     const questionComment = await this.prisma.comment.findUnique({
