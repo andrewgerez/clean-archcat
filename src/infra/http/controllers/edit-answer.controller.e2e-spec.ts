@@ -46,8 +46,10 @@ describe('E2E: Edit answer', () => {
     await app.init()
   })
 
-  test('[put] /answers/:id', async () => {
+  test('[PUT] /answers/:id', async () => {
     const user = await studentFactory.makePrismaStudent()
+
+    const acessToken = jwt.sign({ sub: user.id.toString() })
 
     const question = await questionFactory.makePrismaQuestion({
       authorId: user.id,
@@ -75,8 +77,6 @@ describe('E2E: Edit answer', () => {
 
     const answerId = answer.id.toString()
 
-    const acessToken = jwt.sign({ sub: user.id.toString() })
-
     const response = await request(app.getHttpServer())
       .put(`/answers/${answerId}`)
       .set('Authorization', `Bearer ${acessToken}`)
@@ -100,10 +100,10 @@ describe('E2E: Edit answer', () => {
 
     const attachmentsOnDatabase = await prisma.attachment.findMany({
       where: {
-        questionId: answerOnDatabase?.id,
+        answerId: answerOnDatabase?.id,
       }
     })
-
+    
     expect(attachmentsOnDatabase).toHaveLength(2)
     expect(attachmentsOnDatabase).toEqual(expect.arrayContaining([
       expect.objectContaining({
