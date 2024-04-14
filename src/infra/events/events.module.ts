@@ -12,4 +12,4 @@ import { DatabaseModule } from '../database/database.module'
     SendNotificationUseCase,
   ],
 })
-export class EventModule {}
+export class EventsModule {}
