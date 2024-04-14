@@ -7,6 +7,7 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
 import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
@@ -14,6 +15,9 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     private prisma: PrismaService,
     private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
+  findDetailsBySlug(slug: string): Promise<QuestionDetails> {
+    throw new Error('Method not implemented.')
+  }
 
   async findById(id: string): Promise<Question | null> {
     const question = await this.prisma.question.findUnique({
