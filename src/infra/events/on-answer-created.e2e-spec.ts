@@ -22,6 +22,8 @@ describe('E2E: On answer created', () => {
       providers: [StudentFactory, QuestionFactory],
     }).compile()
 
+    DomainEvents.shouldRun = true
+
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)

@@ -8,8 +8,8 @@ import { DatabaseModule } from '@/infra/database/database.module'
 import { StudentFactory } from 'test/factories/make-student'
 import { QuestionFactory } from 'test/factories/make-question'
 import { AnswerFactory } from 'test/factories/make-answer'
-import { response } from 'express'
 import { waitFor } from 'test/utils/wait-for'
+import { DomainEvents } from '@/core/events/domain-events'
 
 describe('E2E: On question best answer chosen', () => {
   let app: INestApplication
@@ -24,6 +24,8 @@ describe('E2E: On question best answer chosen', () => {
       imports: [AppModule, DatabaseModule],
       providers: [StudentFactory, QuestionFactory, AnswerFactory],
     }).compile()
+
+    DomainEvents.shouldRun = true
 
     app = moduleRef.createNestApplication()
 
