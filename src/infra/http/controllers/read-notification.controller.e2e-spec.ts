@@ -6,79 +6,60 @@ import { test } from 'vitest'
 import { JwtService } from '@nestjs/jwt'
 import { StudentFactory } from 'test/factories/make-student'
 import { DatabaseModule } from '@/infra/database/database.module'
-import { QuestionFactory } from 'test/factories/make-question'
-import { Slug } from '@/domain/forum/enterprise/entities/value-objects/slug'
-import { AttachmentFactory } from 'test/factories/make-attachment'
-import { QuestionAttachmentFactory } from 'test/factories/make-question-attachments'
+import { NotificationFactory } from 'test/factories/make-notification'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 
-describe('E2E: Get question by slug', () => {
+describe('E2E: Read notification', () => {
   let app: INestApplication
+  let prisma: PrismaService
   let studentFactory: StudentFactory
-  let questionFactory: QuestionFactory
-  let attachmentFactory: AttachmentFactory
-  let questionAttachmentFactory: QuestionAttachmentFactory
+  let notificationFactory: NotificationFactory
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
       providers: [
+        PrismaService,
         StudentFactory,
-        QuestionFactory,
-        AttachmentFactory,
-        QuestionAttachmentFactory,
+        NotificationFactory,
       ],
     }).compile()
 
     app = moduleRef.createNestApplication()
-
+    prisma = moduleRef.get(PrismaService)
     studentFactory = moduleRef.get(StudentFactory)
-    attachmentFactory = moduleRef.get(AttachmentFactory)
-    questionAttachmentFactory = moduleRef.get(QuestionAttachmentFactory)
-    questionFactory = moduleRef.get(QuestionFactory)
+    notificationFactory = moduleRef.get(NotificationFactory)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
   })
 
-  test('[GET] /questions/:slug', async () => {
+  test('[PATCH] /notifications/:notificationId/read', async () => {
     const user = await studentFactory.makePrismaStudent({
       name: 'Andrew Gerez',
     })
 
     const acessToken = jwt.sign({ sub: user.id.toString() })
 
-    const question = await questionFactory.makePrismaQuestion({
-      authorId: user.id,
+    const notification = await notificationFactory.makePrismaQuestion({
+      recipientId: user.id,
       title: 'Question 01',
-      slug: Slug.create('question-01'),
-    })
-
-    const attachment = await attachmentFactory.makePrismaAttachment({
-      title: 'Some attachment',
-    })
-
-    await questionAttachmentFactory.makePrismaQuestionAttachment({
-      attachmentId: attachment.id,
-      questionId: question.id,
     })
 
     const response = await request(app.getHttpServer())
-      .get('/questions/question-01')
+      .patch(`/notifications/${notification.id}/read`)
       .set('Authorization', `Bearer ${acessToken}`)
       .send()
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
-      question: expect.objectContaining({
-        title: 'Question 01',
-        author: 'Andrew Gerez',
-        attachments: [
-          expect.objectContaining({
-            title: 'Some attachment',
-          }),
-        ],
-      }),
+    expect(response.statusCode).toBe(204)
+
+    const notificationOnDatabase = await prisma.notification.findFirst({
+      where: {
+        recipientId: user.id.toString(),
+      }
     })
+
+    expect(notificationOnDatabase?.readAt).not.toBeNull()
   })
 })
