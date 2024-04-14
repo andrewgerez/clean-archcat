@@ -1,29 +1,25 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
-import {
-  QuestionsRepository
-} from '@/domain/forum/application/repositories/questions-repository'
+import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Question } from '@/domain/forum/enterprise/entities/question'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
 import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 import { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
+import { PrismaQuestionDetailsMapper } from '../mappers/prisma-question-details-mapper'
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
   constructor(
     private prisma: PrismaService,
-    private questionAttachmentsRepository: QuestionAttachmentsRepository
+    private questionAttachmentsRepository: QuestionAttachmentsRepository,
   ) {}
-  findDetailsBySlug(slug: string): Promise<QuestionDetails> {
-    throw new Error('Method not implemented.')
-  }
 
   async findById(id: string): Promise<Question | null> {
     const question = await this.prisma.question.findUnique({
       where: {
         id,
-      }
+      },
     })
 
     if (!question) {
@@ -37,7 +33,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     const question = await this.prisma.question.findUnique({
       where: {
         slug,
-      }
+      },
     })
 
     if (!question) {
@@ -45,6 +41,24 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     }
 
     return PrismaQuestionMapper.toDomain(question)
+  }
+
+  async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const question = await this.prisma.question.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        author: true,
+        attachments: true,
+      },
+    })
+
+    if (!question) {
+      return null
+    }
+
+    return PrismaQuestionDetailsMapper.toDomain(question)
   }
 
   async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
@@ -67,7 +81,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     })
 
     await this.questionAttachmentsRepository.createMany(
-      question.attachments.getItems()
+      question.attachments.getItems(),
     )
   }
 
@@ -82,11 +96,11 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         data,
       }),
       this.questionAttachmentsRepository.createMany(
-        question.attachments.getNewItems()
+        question.attachments.getNewItems(),
       ),
       this.questionAttachmentsRepository.deleteMany(
-        question.attachments.getRemovedItems()
-      )
+        question.attachments.getRemovedItems(),
+      ),
     ])
   }
 

@@ -1,4 +1,11 @@
-import { Controller, Body, BadRequestException, Put, HttpCode, Param } from '@nestjs/common'
+import {
+  Controller,
+  Body,
+  BadRequestException,
+  Put,
+  HttpCode,
+  Param,
+} from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
@@ -23,7 +30,7 @@ export class EditAnswerController {
   async handle(
     @Body(bodyValidationPipe) body: EditAnswerBodySchema,
     @CurrentUser() user: UserPayload,
-    @Param('id') answerId: string
+    @Param('id') answerId: string,
   ) {
     const { content, attachments } = body
     const { sub: userId } = user

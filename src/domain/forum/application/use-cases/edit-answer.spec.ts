@@ -126,7 +126,7 @@ describe('Edit Answer', () => {
         expect.objectContaining({
           attachmentId: new UniqueEntityID('3'),
         }),
-      ])
+      ]),
     )
   })
 })

@@ -17,10 +17,7 @@ describe('E2E: Fetch recent questions', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        QuestionFactory,
-      ],
+      providers: [StudentFactory, QuestionFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -39,11 +36,11 @@ describe('E2E: Fetch recent questions', () => {
     await Promise.all([
       questionFactory.makePrismaQuestion({
         authorId: user.id,
-        title: 'Question 01'
+        title: 'Question 01',
       }),
       questionFactory.makePrismaQuestion({
         authorId: user.id,
-        title: 'Question 02'
+        title: 'Question 02',
       }),
     ])
 

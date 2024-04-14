@@ -20,11 +20,7 @@ describe('E2E: Delete question comment', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        QuestionFactory,
-        QuestionCommentFactory,
-      ]
+      providers: [StudentFactory, QuestionFactory, QuestionCommentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -47,10 +43,11 @@ describe('E2E: Delete question comment', () => {
       authorId: user.id,
     })
 
-    const questionComment = await questionCommentFactory.makePrismaQuestionComment({
-      authorId: user.id,
-      questionId: question.id,
-    })
+    const questionComment =
+      await questionCommentFactory.makePrismaQuestionComment({
+        authorId: user.id,
+        questionId: question.id,
+      })
 
     const questionCommentId = questionComment.id.toString()
 

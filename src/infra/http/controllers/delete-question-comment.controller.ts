@@ -1,4 +1,10 @@
-import { Controller, BadRequestException, Delete, HttpCode, Param } from '@nestjs/common'
+import {
+  Controller,
+  BadRequestException,
+  Delete,
+  HttpCode,
+  Param,
+} from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { DeleteQuestionCommentUseCase } from '@/domain/forum/application/use-cases/delete-question-comment'
@@ -11,7 +17,7 @@ export class DeleteQuestionCommentController {
   @HttpCode(204)
   async handle(
     @CurrentUser() user: UserPayload,
-    @Param('id') questionCommentId: string
+    @Param('id') questionCommentId: string,
   ) {
     const { sub: userId } = user
 

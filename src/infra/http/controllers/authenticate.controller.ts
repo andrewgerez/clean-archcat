@@ -3,7 +3,9 @@ import {
   Body,
   Controller,
   HttpCode,
-  Post, UnauthorizedException, UsePipes
+  Post,
+  UnauthorizedException,
+  UsePipes,
 } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
@@ -30,7 +32,8 @@ export class AuthenticateController {
     const { email, password } = body
 
     const result = await this.authenticateStudent.execute({
-      email, password
+      email,
+      password,
     })
 
     if (result.isLeft()) {

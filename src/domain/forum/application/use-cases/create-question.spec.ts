@@ -20,7 +20,7 @@ describe('Create Question', () => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
       inMemoryAttachmentsRepository,
-      inMemoryStudentsRepository
+      inMemoryStudentsRepository,
     )
     sut = new CreateQuestionUseCase(inMemoryQuestionsRepository)
   })
@@ -64,7 +64,7 @@ describe('Create Question', () => {
         expect.objectContaining({
           attachmentId: new UniqueEntityID('2'),
         }),
-      ])
+      ]),
     )
   })
 })

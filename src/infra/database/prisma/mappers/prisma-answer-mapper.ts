@@ -10,9 +10,10 @@ export class PrismaAnswerMapper {
         authorId: new UniqueEntityID(raw.authorId),
         questionId: new UniqueEntityID(raw.questionId),
         createdAt: raw.createdAt,
-        updatedAt: raw.updateAt
+        updatedAt: raw.updateAt,
       },
-      new UniqueEntityID(raw.id))
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(answer: Answer): Prisma.AnswerUncheckedCreateInput {

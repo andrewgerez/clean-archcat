@@ -18,7 +18,7 @@ describe('Authenticate Student', () => {
     sut = new AuthenticateStudentUseCase(
       inMemoryStudentsRepository,
       fakeHasher,
-      fakeEncrypter
+      fakeEncrypter,
     )
   })
 
@@ -29,7 +29,7 @@ describe('Authenticate Student', () => {
     })
 
     inMemoryStudentsRepository.items.push(student)
-    
+
     const result = await sut.execute({
       email: 'andrew-dev@email.com',
       password: '123456',

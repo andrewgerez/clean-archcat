@@ -29,7 +29,7 @@ describe('Get Question By Slug', () => {
     sut = new GetQuestionBySlugUseCase(inMemoryQuestionsRepository)
   })
 
-  it('should be able to get a question by slug', async () => {  
+  it('should be able to get a question by slug', async () => {
     const student = makeStudent({
       name: 'Andrew Gerez',
     })
@@ -38,7 +38,7 @@ describe('Get Question By Slug', () => {
 
     const newQuestion = makeQuestion({
       authorId: student.id,
-      slug: Slug.create('example-question')
+      slug: Slug.create('example-question'),
     })
 
     const attachment = makeAttachment({
@@ -51,7 +51,7 @@ describe('Get Question By Slug', () => {
       makeQuestionAttachment({
         attachmentId: attachment.id,
         questionId: newQuestion.id,
-      })
+      }),
     )
 
     await inMemoryQuestionsRepository.create(newQuestion)
@@ -67,7 +67,7 @@ describe('Get Question By Slug', () => {
         attachments: [
           expect.objectContaining({
             title: 'Some attachment',
-          })
+          }),
         ],
       }),
     })

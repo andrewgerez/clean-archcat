@@ -13,13 +13,14 @@ export class PrismaAnswerAttachmentMapper {
         attachmentId: new UniqueEntityID(raw.id),
         answerId: new UniqueEntityID(raw.questionId),
       },
-      new UniqueEntityID(raw.id))
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrismaUpdateMany(
-    attachments: AnswerAttachment[]
+    attachments: AnswerAttachment[],
   ): Prisma.AttachmentUpdateManyArgs {
-    const attachmentIds = attachments.map(attachment => {
+    const attachmentIds = attachments.map((attachment) => {
       return attachment.attachmentId.toString()
     })
 
@@ -27,11 +28,11 @@ export class PrismaAnswerAttachmentMapper {
       where: {
         id: {
           in: attachmentIds,
-        }
+        },
       },
       data: {
         answerId: attachments[0].answerId.toString(),
-      }
+      },
     }
   }
 }

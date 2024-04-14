@@ -1,4 +1,10 @@
-import { Controller, Get, Query, BadRequestException, Param } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Query,
+  BadRequestException,
+  Param,
+} from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { FetchAnswerCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-answer-comments'
@@ -22,7 +28,7 @@ export class FetchAnswerCommentsController {
   @Get()
   async handle(
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,
-    @Param('questionId') answerId: string
+    @Param('questionId') answerId: string,
   ) {
     const result = await this.fetchAnswerComments.execute({
       answerId,

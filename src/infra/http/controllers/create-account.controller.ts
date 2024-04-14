@@ -2,7 +2,10 @@ import {
   Controller,
   Post,
   HttpCode,
-  Body, UsePipes, ConflictException, BadRequestException
+  Body,
+  UsePipes,
+  ConflictException,
+  BadRequestException,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
@@ -32,7 +35,7 @@ export class CreateAccountController {
     const result = await this.registerStudent.execute({
       name,
       email,
-      password
+      password,
     })
 
     if (result.isLeft()) {

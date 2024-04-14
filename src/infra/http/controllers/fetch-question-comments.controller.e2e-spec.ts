@@ -19,11 +19,7 @@ describe('E2E: Fetch question comments', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        QuestionFactory,
-        QuestionCommentFactory,
-      ],
+      providers: [StudentFactory, QuestionFactory, QuestionCommentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -52,12 +48,12 @@ describe('E2E: Fetch question comments', () => {
       questionCommentFactory.makePrismaQuestionComment({
         authorId: user.id,
         questionId: question.id,
-        content: 'Comment 01'
+        content: 'Comment 01',
       }),
       questionCommentFactory.makePrismaQuestionComment({
         authorId: user.id,
         questionId: question.id,
-        content: 'Comment 02'
+        content: 'Comment 02',
       }),
     ])
 
@@ -69,8 +65,14 @@ describe('E2E: Fetch question comments', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       comments: expect.arrayContaining([
-        expect.objectContaining({ content: 'Comment 01', authorName: 'Andrew Gerez' }),
-        expect.objectContaining({ content: 'Comment 02', authorName: 'Andrew Gerez' }),
+        expect.objectContaining({
+          content: 'Comment 01',
+          authorName: 'Andrew Gerez',
+        }),
+        expect.objectContaining({
+          content: 'Comment 02',
+          authorName: 'Andrew Gerez',
+        }),
       ]),
     })
   })

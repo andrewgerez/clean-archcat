@@ -1,13 +1,13 @@
-import {
-  AnswerAttachmentsRepository
-} from '@/domain/forum/application/repositories/answer-attachments-repository'
+import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
 import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaAnswerAttachmentMapper } from '../mappers/prisma-answer-attachment-mapper'
 
 @Injectable()
-export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepository {
+export class PrismaAnswerAttachmentsRepository
+  implements AnswerAttachmentsRepository
+{
   constructor(private prisma: PrismaService) {}
 
   async createMany(attachments: AnswerAttachment[]): Promise<void> {
@@ -21,7 +21,7 @@ export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepos
   async deleteMany(attachments: AnswerAttachment[]): Promise<void> {
     if (!attachments.length) return
 
-    const attachmentIds = attachments.map(attachment => {
+    const attachmentIds = attachments.map((attachment) => {
       return attachment.id.toString()
     })
 
@@ -29,8 +29,8 @@ export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepos
       where: {
         id: {
           in: attachmentIds,
-        }
-      }
+        },
+      },
     })
   }
 
@@ -38,7 +38,7 @@ export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepos
     const answerAttachments = await this.prisma.attachment.findMany({
       where: {
         answerId,
-      }
+      },
     })
 
     return answerAttachments.map(PrismaAnswerAttachmentMapper.toDomain)
@@ -48,7 +48,7 @@ export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepos
     await this.prisma.attachment.deleteMany({
       where: {
         answerId,
-      }
+      },
     })
   }
 }

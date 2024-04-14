@@ -14,13 +14,14 @@ export class PrismaAnswerCommentMapper {
         authorId: new UniqueEntityID(raw.authorId),
         answerId: new UniqueEntityID(raw.answerId),
         createdAt: raw.createdAt,
-        updatedAt: raw.updateAt
+        updatedAt: raw.updateAt,
       },
-      new UniqueEntityID(raw.id))
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(
-    answerComment: AnswerComment
+    answerComment: AnswerComment,
   ): Prisma.CommentUncheckedCreateInput {
     return {
       id: answerComment.id.toString(),

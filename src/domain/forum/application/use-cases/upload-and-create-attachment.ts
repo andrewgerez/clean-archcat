@@ -22,16 +22,17 @@ type UploadAndCreateAttachmentUseCaseResponse = Either<
 export class UploadAndCreateAttachmentUseCase {
   constructor(
     private attachmentsRepository: AttachmentsRepository,
-    private uploader: Uploader
+    private uploader: Uploader,
   ) {}
 
   async execute({
     fileName,
     fileType,
-    body
+    body,
   }: UploadAndCreateAttachmentUseCaseRequest): Promise<UploadAndCreateAttachmentUseCaseResponse> {
-    const mimetypeRegex = /^(image\/jpeg|image\/png|image\/jpg|application\/pdf)$/;
-    const isValidMimetype = mimetypeRegex.test(fileType);
+    const mimetypeRegex =
+      /^(image\/jpeg|image\/png|image\/jpg|application\/pdf)$/
+    const isValidMimetype = mimetypeRegex.test(fileType)
 
     if (!isValidMimetype) {
       return left(new InvalidAttachmentTypeError(fileType))
@@ -40,7 +41,7 @@ export class UploadAndCreateAttachmentUseCase {
     const { url } = await this.uploader.upload({
       fileName,
       fileType,
-      body
+      body,
     })
 
     const attachment = Attachment.create({

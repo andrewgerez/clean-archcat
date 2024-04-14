@@ -10,14 +10,15 @@ export class PrismaQuestionMapper {
         title: raw.title,
         content: raw.content,
         authorId: new UniqueEntityID(raw.authorId),
-        bestAnswerId: raw.bestAnswerId 
-          ? new UniqueEntityID(raw.bestAnswerId) 
+        bestAnswerId: raw.bestAnswerId
+          ? new UniqueEntityID(raw.bestAnswerId)
           : null,
         slug: Slug.create(raw.slug),
         createdAt: raw.createdAt,
-        updatedAt: raw.updateAt
+        updatedAt: raw.updateAt,
       },
-      new UniqueEntityID(raw.id))
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(question: Question): Prisma.QuestionUncheckedCreateInput {

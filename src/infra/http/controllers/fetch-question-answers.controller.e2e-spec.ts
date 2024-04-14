@@ -19,11 +19,7 @@ describe('E2E: Fetch question answers', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        QuestionFactory,
-        AnswerFactory,
-      ],
+      providers: [StudentFactory, QuestionFactory, AnswerFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -50,12 +46,12 @@ describe('E2E: Fetch question answers', () => {
       answerFactory.makePrismaAnswer({
         authorId: user.id,
         questionId: question.id,
-        content: 'Answer 01'
+        content: 'Answer 01',
       }),
       answerFactory.makePrismaAnswer({
         authorId: user.id,
         questionId: question.id,
-        content: 'Answer 02'
+        content: 'Answer 02',
       }),
     ])
 

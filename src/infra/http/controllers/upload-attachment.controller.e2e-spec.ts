@@ -19,7 +19,7 @@ describe('E2E: Upload attachment', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
- 
+
     studentFactory = moduleRef.get(StudentFactory)
     jwt = moduleRef.get(JwtService)
 

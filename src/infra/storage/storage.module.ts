@@ -11,8 +11,6 @@ import { EnvModule } from '../env/env.module'
       useClass: R2Storage,
     },
   ],
-  exports: [
-    Uploader,
-  ]
+  exports: [Uploader],
 })
-export class StorageModule { }
+export class StorageModule {}

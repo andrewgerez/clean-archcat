@@ -30,7 +30,7 @@ describe('E2E: Edit answer', () => {
         AnswerFactory,
         AttachmentFactory,
         AnswerAttachmentFactory,
-      ]
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -82,10 +82,7 @@ describe('E2E: Edit answer', () => {
       .set('Authorization', `Bearer ${acessToken}`)
       .send({
         content: 'New answer content',
-        attachments: [
-          attachment1.id.toString(),
-          attachment3.id.toString(),
-        ],
+        attachments: [attachment1.id.toString(), attachment3.id.toString()],
       })
 
     expect(response.statusCode).toBe(204)
@@ -101,17 +98,19 @@ describe('E2E: Edit answer', () => {
     const attachmentsOnDatabase = await prisma.attachment.findMany({
       where: {
         answerId: answerOnDatabase?.id,
-      }
+      },
     })
-    
+
     expect(attachmentsOnDatabase).toHaveLength(2)
-    expect(attachmentsOnDatabase).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        id: attachment1.id.toString(),
-      }),
-      expect.objectContaining({
-        id: attachment3.id.toString(),
-      }),
-    ]))
+    expect(attachmentsOnDatabase).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: attachment1.id.toString(),
+        }),
+        expect.objectContaining({
+          id: attachment3.id.toString(),
+        }),
+      ]),
+    )
   })
 })

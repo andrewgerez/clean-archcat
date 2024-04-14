@@ -27,7 +27,7 @@ describe('E2E: Delete answer comment', () => {
         QuestionFactory,
         AnswerFactory,
         AnswerCommentFactory,
-      ]
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -58,7 +58,7 @@ describe('E2E: Delete answer comment', () => {
 
     const answerComment = await answerCommentFactory.makePrismaAnswerComment({
       authorId: user.id,
-      answerId: answer.id, 
+      answerId: answer.id,
     })
 
     const answerCommentId = answerComment.id.toString()

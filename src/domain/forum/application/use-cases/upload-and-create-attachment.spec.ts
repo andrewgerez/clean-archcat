@@ -14,7 +14,7 @@ describe('Upload and create attachment', () => {
 
     sut = new UploadAndCreateAttachmentUseCase(
       inMemoryAttachmentsRepository,
-      fakeUploader
+      fakeUploader,
     )
   })
 
@@ -30,9 +30,11 @@ describe('Upload and create attachment', () => {
       attachment: inMemoryAttachmentsRepository.items[0],
     })
     expect(fakeUploader.uploads).toHaveLength(1)
-    expect(fakeUploader.uploads[0]).toEqual(expect.objectContaining({
-      fileName: 'image.png'
-    }))
+    expect(fakeUploader.uploads[0]).toEqual(
+      expect.objectContaining({
+        fileName: 'image.png',
+      }),
+    )
   })
 
   it('should not be able to upload an attachment with invalid file type', async () => {

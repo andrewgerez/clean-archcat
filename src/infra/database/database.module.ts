@@ -30,28 +30,28 @@ import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attach
     },
     {
       provide: QuestionCommentsRepository,
-      useClass: PrismaQuestionCommentsRepository
+      useClass: PrismaQuestionCommentsRepository,
     },
     {
       provide: QuestionAttachmentsRepository,
-      useClass: PrismaQuestionAttachmentsRepository
+      useClass: PrismaQuestionAttachmentsRepository,
     },
     {
       provide: AnswersRepository,
-      useClass: PrismaAnswersRepository
+      useClass: PrismaAnswersRepository,
     },
     {
       provide: AnswerCommentsRepository,
-      useClass: PrismaAnswerCommentsRepository
+      useClass: PrismaAnswerCommentsRepository,
     },
     {
       provide: AnswerAttachmentsRepository,
-      useClass: PrismaAnswerAttachmentsRepository
+      useClass: PrismaAnswerAttachmentsRepository,
     },
     {
       provide: AttachmentsRepository,
       useClass: PrismaAttachmentsRepository,
-    }
+    },
   ],
   exports: [
     PrismaService,
@@ -67,4 +67,4 @@ import { PrismaAttachmentsRepository } from './prisma/repositories/prisma-attach
     AttachmentsRepository,
   ],
 })
-export class DatabaseModule{}
+export class DatabaseModule {}

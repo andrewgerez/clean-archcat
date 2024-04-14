@@ -27,7 +27,7 @@ describe('E2E: Edit question', () => {
         QuestionFactory,
         AttachmentFactory,
         QuestionAttachmentFactory,
-      ]
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -56,7 +56,7 @@ describe('E2E: Edit question', () => {
       attachmentId: attachment1.id,
       questionId: question.id,
     })
-    
+
     await questionAttachmentFactory.makePrismaQuestionAttachment({
       attachmentId: attachment2.id,
       questionId: question.id,
@@ -74,10 +74,7 @@ describe('E2E: Edit question', () => {
       .send({
         title: 'New title',
         content: 'New content',
-        attachments: [
-          attachment1.id.toString(),
-          attachment3.id.toString(),
-        ],
+        attachments: [attachment1.id.toString(), attachment3.id.toString()],
       })
 
     expect(response.statusCode).toBe(204)
@@ -94,17 +91,19 @@ describe('E2E: Edit question', () => {
     const attachmentsOnDatabase = await prisma.attachment.findMany({
       where: {
         questionId: questionOnDatabase?.id,
-      }
+      },
     })
 
     expect(attachmentsOnDatabase).toHaveLength(2)
-    expect(attachmentsOnDatabase).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        id: attachment1.id.toString(),
-      }),
-      expect.objectContaining({
-        id: attachment3.id.toString(),
-      }),
-    ]))
+    expect(attachmentsOnDatabase).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: attachment1.id.toString(),
+        }),
+        expect.objectContaining({
+          id: attachment3.id.toString(),
+        }),
+      ]),
+    )
   })
 })

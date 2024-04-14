@@ -14,13 +14,14 @@ export class PrismaQuestionCommentMapper {
         authorId: new UniqueEntityID(raw.authorId),
         questionId: new UniqueEntityID(raw.questionId),
         createdAt: raw.createdAt,
-        updatedAt: raw.updateAt
+        updatedAt: raw.updateAt,
       },
-      new UniqueEntityID(raw.id))
+      new UniqueEntityID(raw.id),
+    )
   }
 
   static toPrisma(
-    questionComment: QuestionComment
+    questionComment: QuestionComment,
   ): Prisma.CommentUncheckedCreateInput {
     return {
       id: questionComment.id.toString(),

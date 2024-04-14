@@ -35,4 +35,4 @@ import { EnvModule } from '../env/env.module'
     },
   ],
 })
-export class AuthModule { }
+export class AuthModule {}

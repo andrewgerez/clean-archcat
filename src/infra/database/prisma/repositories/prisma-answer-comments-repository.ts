@@ -1,6 +1,4 @@
-import {
-  AnswerCommentsRepository
-} from '@/domain/forum/application/repositories/answer-comments-repository'
+import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 import { Injectable } from '@nestjs/common'
@@ -10,14 +8,16 @@ import { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-obje
 import { PrismaCommentWithAuthorMapper } from '../mappers/prisma-comment-with-author-mapper'
 
 @Injectable()
-export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository {
+export class PrismaAnswerCommentsRepository
+  implements AnswerCommentsRepository
+{
   constructor(private prisma: PrismaService) {}
 
   async findById(id: string): Promise<AnswerComment> {
     const answerComment = await this.prisma.comment.findUnique({
       where: {
         id,
-      }
+      },
     })
 
     if (!answerComment) {
@@ -29,7 +29,7 @@ export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository 
 
   async findManyByAnswerId(
     answerId: string,
-    { page }: PaginationParams
+    { page }: PaginationParams,
   ): Promise<AnswerComment[]> {
     const answerComments = await this.prisma.comment.findMany({
       where: {
@@ -47,7 +47,7 @@ export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository 
 
   async findManyByAnswerIdWithAuthor(
     answerId: string,
-    { page }: PaginationParams
+    { page }: PaginationParams,
   ): Promise<CommentWithAuthor[]> {
     const answerComments = await this.prisma.answer.findMany({
       where: {
@@ -78,7 +78,7 @@ export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository 
     await this.prisma.comment.delete({
       where: {
         id: answerComment.id.toString(),
-      }
+      },
     })
   }
 }

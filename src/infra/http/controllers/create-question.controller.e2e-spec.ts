@@ -19,10 +19,7 @@ describe('E2E: Create question', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        AttachmentFactory,
-      ]
+      providers: [StudentFactory, AttachmentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -49,10 +46,7 @@ describe('E2E: Create question', () => {
       .send({
         title: 'New question',
         content: 'Some content',
-        attachments: [
-          attachment1.id.toString(),
-          attachment2.id.toString(),
-        ],
+        attachments: [attachment1.id.toString(), attachment2.id.toString()],
       })
 
     expect(response.statusCode).toBe(201)
@@ -68,7 +62,7 @@ describe('E2E: Create question', () => {
     const attachmentsOnDatabase = await prisma.attachment.findMany({
       where: {
         questionId: questionOnDatabase?.id,
-      }
+      },
     })
 
     expect(attachmentsOnDatabase).toHaveLength(2)

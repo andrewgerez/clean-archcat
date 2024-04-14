@@ -28,9 +28,11 @@ export class RegisterStudentUseCase {
   async execute({
     name,
     email,
-    password
+    password,
   }: RegisterStudentUseCaseRequest): Promise<RegisterStudentUseCaseResponse> {
-    const studentWithSameEmail = await this.studentsRepository.findByEmail(email)
+    const studentWithSameEmail = await this.studentsRepository.findByEmail(
+      email,
+    )
 
     if (studentWithSameEmail) {
       return left(new StudentAlreadyExistsError(email))

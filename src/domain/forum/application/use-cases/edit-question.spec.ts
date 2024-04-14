@@ -17,13 +17,13 @@ let sut: EditQuestionUseCase
 describe('Edit Question', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
-    new InMemoryQuestionAttachmentsRepository()
+      new InMemoryQuestionAttachmentsRepository()
     inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryStudentsRepository = new InMemoryStudentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
       inMemoryAttachmentsRepository,
-      inMemoryStudentsRepository
+      inMemoryStudentsRepository,
     )
 
     sut = new EditQuestionUseCase(
@@ -138,7 +138,7 @@ describe('Edit Question', () => {
         expect.objectContaining({
           attachmentId: new UniqueEntityID('3'),
         }),
-      ])
+      ]),
     )
   })
 })

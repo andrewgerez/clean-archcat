@@ -20,11 +20,7 @@ describe('E2E: Answer question', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [
-        StudentFactory,
-        QuestionFactory,
-        AttachmentFactory,
-      ]
+      providers: [StudentFactory, QuestionFactory, AttachmentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -57,10 +53,7 @@ describe('E2E: Answer question', () => {
       .set('Authorization', `Bearer ${acessToken}`)
       .send({
         content: 'New answer',
-        attachments: [
-          attachment1.id.toString(),
-          attachment2.id.toString()
-        ],
+        attachments: [attachment1.id.toString(), attachment2.id.toString()],
       })
 
     expect(response.statusCode).toBe(201)
@@ -76,7 +69,7 @@ describe('E2E: Answer question', () => {
     const attachmentsOnDatabase = await prisma.attachment.findMany({
       where: {
         answerId: answerOnDatabase?.id,
-      }
+      },
     })
 
     expect(attachmentsOnDatabase).toHaveLength(2)

@@ -24,7 +24,7 @@ export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
   get authorId() {
     return this.props.authorId
   }
-  
+
   get author() {
     return this.props.author
   }
@@ -36,7 +36,6 @@ export class QuestionDetails extends ValueObject<QuestionDetailsProps> {
   get content() {
     return this.props.content
   }
-
 
   get createdAt() {
     return this.props.createdAt
