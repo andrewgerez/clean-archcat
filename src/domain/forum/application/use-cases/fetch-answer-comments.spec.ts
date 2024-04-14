@@ -11,14 +11,15 @@ let sut: FetchAnswerCommentsUseCase
 
 describe('Fetch Answer Comments', () => {
   beforeEach(() => {
-    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(inMemoryStudentsRepository)
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      inMemoryStudentsRepository,
+    )
     sut = new FetchAnswerCommentsUseCase(inMemoryAnswerCommentsRepository)
   })
 
   it('should be able to fetch answer comments', async () => {
-    const student = makeStudent({
-      name: 'Andrew Gerez',
-    })
+    const student = makeStudent({ name: 'Andrew Gerez' })
 
     inMemoryStudentsRepository.items.push(student)
 
@@ -47,27 +48,34 @@ describe('Fetch Answer Comments', () => {
     })
 
     expect(result.value?.comments).toHaveLength(3)
-    expect(result.value.comments).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        author: 'Andrew Gerez',
-        commentId: comment1.id,
-      }),
-      expect.objectContaining({
-        author: 'Andrew Gerez',
-        commentId: comment2.id,
-      }),
-      expect.objectContaining({
-        author: 'Andrew Gerez',
-        commentId: comment3.id,
-      }),
-    ]))
+    expect(result.value?.comments).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          author: 'Andrew Gerez',
+          commentId: comment1.id,
+        }),
+        expect.objectContaining({
+          author: 'Andrew Gerez',
+          commentId: comment2.id,
+        }),
+        expect.objectContaining({
+          author: 'Andrew Gerez',
+          commentId: comment3.id,
+        }),
+      ]),
+    )
   })
 
   it('should be able to fetch paginated answer comments', async () => {
+    const student = makeStudent({ name: 'Andrew Gerez' })
+
+    inMemoryStudentsRepository.items.push(student)
+
     for (let i = 1; i <= 22; i++) {
       await inMemoryAnswerCommentsRepository.create(
         makeAnswerComment({
           answerId: new UniqueEntityID('answer-1'),
+          authorId: student.id,
         }),
       )
     }
