@@ -64,4 +64,58 @@ describe('E2E: Prisma Questions Repository', () => {
 
     expect(cached).toEqual(JSON.stringify(questionDetails))
   })
+
+  it('should cache question details on subsequent calls', async () => {
+    const user = await studentFactory.makePrismaStudent()
+
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
+
+    const attachment = await attachmentFactory.makePrismaAttachment()
+
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
+      attachmentId: attachment.id,
+      questionId: question.id,
+    })
+
+    const slug = question.slug.value  
+
+    await cacheRepository.set(
+      `questions:${slug}:details`,
+      JSON.stringify({ empty: true },
+    ))
+
+    const questionDetails = await questionsRepository.findDetailsBySlug(slug)
+
+    expect(questionDetails).toEqual({ empty: true })
+  })
+
+  it('should reset question details cache when saving the question', async () => {
+    const user = await studentFactory.makePrismaStudent()
+
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    })
+
+    const attachment = await attachmentFactory.makePrismaAttachment()
+
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
+      attachmentId: attachment.id,
+      questionId: question.id,
+    })
+
+    const slug = question.slug.value  
+
+    await cacheRepository.set(
+      `questions:${slug}:details`,
+      JSON.stringify({ empty: true },
+    ))
+
+    await questionsRepository.save(question)
+
+    const cached = await cacheRepository.get(`questions:${slug}:details`)
+
+    expect(cached).toBeNull()
+  })
 })
