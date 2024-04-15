@@ -12,3 +12,11 @@ services:
       POSTGRES_DB: archcat
     volumes:
       - ./data/pg:/data/postgres
+
+  cache:
+    container_name: clean-archcat-cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data
